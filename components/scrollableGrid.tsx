@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Anime {
 	mal_id: number;
@@ -18,6 +19,7 @@ export default function ScrollableGrid() {
 	const [animeList, setAnimeList] = useState<Anime[]>([]);
 	const [loading, setLoading] = useState(true);
 	const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+	const router = useRouter();
 
 	useEffect(() => {
 		const fetchTopAnime = async () => {
@@ -66,6 +68,10 @@ export default function ScrollableGrid() {
 		return () => clearInterval(scrollInterval);
 	}, [animeList]);
 
+	const handleCardClicker = (mal_id: number) => {
+		router.push(`/anime/${mal_id}`);
+	};
+
 	return (
 		<div className="w-full py-8">
 			<h2 className="text-2xl font-bold text-white mb-4">Top Anime</h2>
@@ -84,8 +90,10 @@ export default function ScrollableGrid() {
 					className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 scroll-snap-x scroll-snap-mandatory"
 				>
 					{animeList.map((anime) => (
+						// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
 						<div
 							key={anime.mal_id}
+							onClick={() => handleCardClicker(anime.mal_id)}
 							className="bg-gray-800 rounded-md shadow-md w-48 flex-shrink-0 scroll-snap-start"
 						>
 							<img
