@@ -53,7 +53,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="text-2xl font-bold">
             <a href="/" className="hover:text-gray-400 transition-colors">
-              AnimeStream
+              LocalAni
             </a>
           </div>
 
@@ -163,6 +163,7 @@ export default function Navbar() {
           {navigation.map(({ label, dropdown }) => (
             <li key={label}>
               <button
+              type="button"
                 onClick={() => toggleDropdownSidebar(label)}
                 className="flex items-center justify-between w-full py-2 px-4 rounded-md hover:bg-gray-800"
               >
@@ -197,9 +198,16 @@ export default function Navbar() {
       {/* Overlay for Sidebar */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={toggleSidebar}
-        />
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={toggleSidebar}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            toggleSidebar();
+          }
+        }}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+        tabIndex={0}
+      />
       )}
     </>
   );

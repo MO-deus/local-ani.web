@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LocalAni",
-  description: "Formed with loce for all the otakus",
+  description: "Build with love for all the otakus",
 };
 
 export default function RootLayout({
