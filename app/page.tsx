@@ -21,7 +21,7 @@ export default function Home() {
 			</header>
 
 			{/* Featured Section */}
-			<section className="bg-gray-900 min-h-screen text-white">
+			<section className="bg-gray-900 pt-6 pb-6 text-white">
 				<div className="container mx-auto px-4">
 					<ScrollableGrid />
 				</div>
