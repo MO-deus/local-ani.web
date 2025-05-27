@@ -14,14 +14,11 @@ export default function Home() {
 					<p className="mt-4 text-lg md:text-xl">
 						Watch thousands of anime series and movies in HD quality, ad-free.
 					</p>
-					<Button className="mt-6 bg-white text-black hover:bg-gray-100">
-						Start Watching Now
-					</Button>
 				</div>
 			</header>
 
 			{/* Featured Section */}
-			<section className="bg-gray-900 min-h-screen text-white">
+			<section className="bg-gray-900 pt-6 pb-6 text-white">
 				<div className="container mx-auto px-4">
 					<ScrollableGrid />
 				</div>

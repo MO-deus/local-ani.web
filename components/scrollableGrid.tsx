@@ -73,8 +73,8 @@ export default function ScrollableGrid() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="w-10/12 py-8">
+    <div className="flex items-center justify-center bg-gray-900">
+      <div className="w-10/12 py-4">
         <h2 className="text-2xl font-bold text-white mb-4">Top Anime</h2>
         {loading ? (
           <div className="flex gap-4 overflow-x-auto">
