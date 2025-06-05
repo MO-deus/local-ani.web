@@ -3,19 +3,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { removeDuplicates } from "@/utils/helpers";
+import { Anime } from "@/app/types/anime";
+import { AnimeFetchSource } from "@/app/types/animeFetchSource";
 
-interface Anime {
-  mal_id: number;
-  title: string;
-  images: {
-    jpg: {
-      image_url: string;
-    };
-  };
-  score: number;
+interface ScrollableGridProps {
+  source: AnimeFetchSource;
 }
 
-export default function ScrollableGrid() {
+export default function ScrollableGrid({ source }: ScrollableGridProps) {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
@@ -24,9 +20,10 @@ export default function ScrollableGrid() {
   useEffect(() => {
     const fetchTopAnime = async () => {
       try {
-        const response = await fetch("https://api.jikan.moe/v4/top/anime");
+        const response = await fetch(source.url);
         const data = await response.json();
-        setAnimeList(data.data || []);
+        // the key here for the duplication removal is "mal.id"
+        setAnimeList(removeDuplicates(data.data, (a) => a.mal_id));
       } catch (error) {
         console.error("Failed to fetch anime data:", error);
       } finally {
@@ -35,38 +32,7 @@ export default function ScrollableGrid() {
     };
 
     fetchTopAnime();
-  }, []);
-
-  useEffect(() => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-
-    const cardWidth = container.firstElementChild?.clientWidth;
-    if (cardWidth === undefined) return;
-
-    // scrolling to left
-    const scrollInterval = setInterval(() => {
-      container.scrollBy({
-        left: cardWidth + 16,
-        behavior: "smooth",
-      });
-
-      // scroll back to the start
-      if (
-        container.scrollLeft + container.offsetWidth >=
-        container.scrollWidth
-      ) {
-        setTimeout(() => {
-          container.scrollTo({
-            left: 0,
-            behavior: "smooth",
-          });
-        }, 1000);
-      }
-    }, 3000);
-
-    return () => clearInterval(scrollInterval);
-  }, [animeList]);
+  }, [source]);
 
   const handleCardClicker = (mal_id: number) => {
     router.push(`/anime/${mal_id}`);
@@ -75,7 +41,10 @@ export default function ScrollableGrid() {
   return (
     <div className="flex items-center justify-center bg-gray-900">
       <div className="w-10/12 py-4">
-        <h2 className="text-2xl font-bold text-white mb-4">Top Anime</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">
+          {source.status} Anime
+        </h2>
+
         {loading ? (
           <div className="flex gap-4 overflow-x-auto">
             {Array.from({ length: 4 }).map((_, index) => (
@@ -88,27 +57,55 @@ export default function ScrollableGrid() {
         ) : (
           <div
             ref={scrollContainerRef}
-            className="flex gap-4 overflow-x-auto no-scrollbar scroll-snap-x scroll-snap-mandatory"
+            className="flex gap-4 overflow-x-auto no-scrollbar pb-2"
           >
-            {animeList.map((anime) => (
-              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+            {animeList.map((anime, index) => (
               <div
-                key={anime.mal_id}
+                key={`${anime.mal_id}-${index}`}
                 onClick={() => handleCardClicker(anime.mal_id)}
-                className="bg-gray-800 rounded-md shadow-md w-48 flex-shrink-0 scroll-snap-start"
+                className="relative bg-gray-800 rounded-lg shadow-md w-48 flex-shrink-0 cursor-pointer hover:shadow-xl transition duration-300 group"
               >
+                {/* Anime Image */}
                 <img
                   src={anime.images.jpg.image_url}
                   alt={anime.title}
-                  className="w-full h-48 object-cover rounded-t-md"
+                  className="w-full h-64 object-cover rounded-t-lg"
                 />
+
+                {/* Title */}
                 <div className="p-2">
-                  <h3 className="text-sm font-medium text-white truncate">
+                  <h3 className="text-sm font-semibold text-white text-center truncate">
                     {anime.title}
                   </h3>
-                  <p className="text-gray-400 text-xs mt-1">
-                    Score: {anime.score}
+                </div>
+
+                {/* Hover Overlay */}
+                <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg text-white p-3 flex flex-col justify-center text-sm">
+                  <p className="mb-1">
+                    <span className="font-semibold">Score:</span>{" "}
+                    {anime.score ?? "N/A"}
                   </p>
+                  <p className="mb-1">
+                    <span className="font-semibold">Episodes:</span>{" "}
+                    {anime.episodes ?? "Unknown"}
+                  </p>
+                  <p className="mb-2">
+                    <span className="font-semibold">Type:</span>{" "}
+                    {anime.type ?? "N/A"}
+                  </p>
+
+                  {/* Genre Tags */}
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {/* fix genre type error */}
+                    {(anime.genres || []).slice(0, 3).map((genre, i) => (
+                      <span
+                        key={i}
+                        className="bg-pink-600 text-white text-xs font-semibold px-2 py-1 rounded-full"
+                      >
+                        {genre.name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
