@@ -3,25 +3,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimeFetchSource } from "@/constants/animeSources";
 import { removeDuplicates } from "@/utils/helpers";
-
-interface Anime {
-  type: string;
-  mal_id: number;
-  title: string;
-  episodes: number;
-  genres: {
-    [x: string]: any;
-    name: string;
-  };
-  images: {
-    jpg: {
-      image_url: string;
-    };
-  };
-  score: number;
-}
+import { Anime } from "@/app/types/anime";
+import { AnimeFetchSource } from "@/app/types/animeFetchSource";
 
 interface ScrollableGridProps {
   source: AnimeFetchSource;

@@ -1,5 +1,5 @@
 import ScrollableGrid from "@/components/scrollableGrid";
-import { AnimeFetchSource, animeSources } from "@/constants/animeSources";
+import { animeSources } from "@/constants/animeSources";
 
 export default function Home() {
 	return (

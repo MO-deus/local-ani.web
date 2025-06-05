@@ -1,9 +1,7 @@
-export type AnimeSourceType = "Top" | "Upcoming" | "Seasonal" | "Popular" | "Search" | "Upcoming" | string;
+import { AnimeFetchSource } from "@/app/types/animeFetchSource";
 
-export interface AnimeFetchSource {
-    url: string;
-    status: string;
-}
+
+export type AnimeSourceType = "Top" | "Upcoming" | "Seasonal" | "Popular" | "Search" | "Upcoming" | string;
 
 export const animeSources: Record<string, AnimeFetchSource> = {
     top: {
