@@ -1,4 +1,4 @@
-export type AnimeSourceType = "Top" | "Upcoming" | "Seasonal" | "Popular" | "Search" | string;
+export type AnimeSourceType = "Top" | "Upcoming" | "Seasonal" | "Popular" | "Search" | "Upcoming" | string;
 
 export interface AnimeFetchSource {
     url: string;
@@ -17,5 +17,9 @@ export const animeSources: Record<string, AnimeFetchSource> = {
   seasonal: {
     url: "https://api.jikan.moe/v4/seasons/now",
     status: "Seasonal",
-  }
+  },
+  upcoming : {
+    url : "https://api.jikan.moe/v4/seasons/upcoming",
+    status: "Upcoming"
+  },
 }

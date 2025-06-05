@@ -22,6 +22,7 @@ export default function Home() {
 				<div className="container mx-auto px-4">
 					<ScrollableGrid source={animeSources.top} />
 					<ScrollableGrid source={animeSources.seasonal} />
+					<ScrollableGrid source={animeSources.upcoming} />
 				</div>
 			</section>
 
