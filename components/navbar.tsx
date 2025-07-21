@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Search, LogIn, Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import SearchBar from "./searchBar";
+import { handleSearchQuery } from "@/utils/helpers";
 
 const genres = [
   "Action",
@@ -137,26 +139,7 @@ export default function Navbar() {
           </ul>
 
           {/* Search */}
-          <div className="hidden lg:flex items-center">
-            <form
-              onSubmit={handleSearch}
-              className="flex items-center border border-pink-400 rounded-lg overflow-hidden bg-black/20"
-            >
-              <Input
-                type="text"
-                placeholder="Search anime..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="bg-transparent text-white border-none focus:outline-none w-48"
-              />
-              <button
-                type="submit"
-                className="p-2 bg-pink-600 hover:bg-pink-700 text-white"
-              >
-                <Search className="w-5 h-5" />
-              </button>
-            </form>
-          </div>
+          <SearchBar onSearch={handleSearchQuery} delay={1500}></SearchBar>
 
           {/* Sign In */}
           <div className="hidden lg:flex">
