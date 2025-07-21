@@ -1,10 +1,16 @@
 import { AnimeFetchSource } from "@/app/types/animeFetchSource";
 
-
-export type AnimeSourceType = "Top" | "Upcoming" | "Seasonal" | "Popular" | "Search" | "Upcoming" | string;
+export type AnimeSourceType =
+  | "Top"
+  | "Upcoming"
+  | "Seasonal"
+  | "Popular"
+  | "Search"
+  | "Upcoming"
+  | string;
 
 export const animeSources: Record<string, AnimeFetchSource> = {
-    top: {
+  top: {
     url: "https://api.jikan.moe/v4/top/anime",
     status: "Top",
   },
@@ -16,8 +22,12 @@ export const animeSources: Record<string, AnimeFetchSource> = {
     url: "https://api.jikan.moe/v4/seasons/now",
     status: "Seasonal",
   },
-  upcoming : {
-    url : "https://api.jikan.moe/v4/seasons/upcoming",
-    status: "Upcoming"
+  upcoming: {
+    url: "https://api.jikan.moe/v4/seasons/upcoming",
+    status: "Upcoming",
   },
-}
+  search: {
+    url: "https://api.jikan.moe/v4/anime",
+    status: "Search"
+  }
+};
